@@ -1,0 +1,24 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<h1>Добро пожаловать!</h1>
+  <p>Это главная страница банка ЛИСа.</p>
+
+{% if perms.bank.staff_ %}
+  <h2>Для персонала:</h2>
+  <div class="container-fluid">
+      <ul class="nav navbar-nav navbar-left">
+        {% if perms.bank.staff_ %}
+          <h2>Статус всех существующих транзакций: {{ request.user.account.renew_transactions }}</h2>
+          {% if perms.bank.viewer %}<li><a href="{% url 'accounts' %}">Посмотреть все счета</a></li>{% endif %}
+          <li><a href="{% url 'new-transaction-staff' %}">Оформить штраф/премию</a></li>
+          <li><a href="{% url 'info-staff' %}">Важная информация</a></li>
+        {% endif %}
+      </ul>
+  </div>
+{% endif %}
+
+<h2>Основные новости:</h2>
+  <p>Не следует нарушать правила, которые вы можете прочитать <a href="{% url 'rules' %}">здесь</a>.</p>
+  <p class="text-muted">Вы посещаете эту страницу в {{num_visits}} раз.</p>
+{% endblock %}
