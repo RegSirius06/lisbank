@@ -1,0 +1,46 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Мои транзакции:</h1>
+    <h4>Сейчас на вашем счету 
+        {% if request.user.account.balance > 0 %}
+            <span class="green">{{request.user.account.balance}}t</span>
+        {% elif request.user.account.balance < 0 %}
+            <span class="red">{{request.user.account.balance}}t</span>
+        {% else %}
+            {{request.user.account.balance}}t
+        {% endif %}
+    .</h4>
+    <h4><a href="{% url 'my-transaction' %}">Совершить перевод средств...</a></h4>
+    <h2>Последние изменения счёта:</h2>
+    {% if transaction_list %}
+    <table class="table">
+        
+        <tr class="tr">
+            <td class="td">Дата</td>
+            <td class="td">Изменение счёта</td>
+            <td class="td">Комментарий</td>
+        </tr>
+
+        {% for element in transaction_list %}
+        <tr class="tr">
+            <td class="td">{{ element.date }}</td>
+            <td class="td">
+                {% if element.sign == '-' %}
+                    <font color="red">{{ element.get_sum }}</font>
+                {% elif element.sign == '+' %}
+                    <font color="green">{{ element.get_sum }}</font>
+                {% else %}
+                    {{ element.get_sum }}
+                {% endif %}
+            </td>
+            <td class="td">{{ element.comment }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    {% else %}
+      <p>На ваш счет ещё не было поступлений.</p>
+    {% endif %}
+    <a href="#top" title="В начало" tabindex="-1" class="topbutton">Наверх</a>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Все балансы:</h1>
+    {% if object_list %}
+    <ui>
+        {% for element in object_list %}
+        <li>
+            <a href="{{ element.get_absolute_url }}">{{ element.short_name }}</a>
+        </li>
+        {% endfor %}
+    </ui>
+    {% else %}
+      <p>Ещё не существует ни одного аккаунта.</p>
+    {% endif %}
+    <a href="#top" title="В начало" tabindex="-1" class="topbutton">Наверх</a>
+{% endblock %}
