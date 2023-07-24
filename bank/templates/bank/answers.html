@@ -12,7 +12,7 @@
     <h2>{{ element.name }}</h2>
     {% if perms.bank.meria %}<h4><a href="{{ element.get_absolute_url }}">Изменить задачу...</a></h4>{% endif %}
     <p>{{ element.text }}</p>
-    <p>Оплата за решение: <span class="green">{{ element.cnt }}</span>t.</p>
+    <p>Плата за решение: <span class="green">{{ element.cnt }}</span>t.</p>
     <p class="text-muted">Срок сдачи: {% if element.status %}15 июля.{% else %}сегодня.{% endif %}</p>
     <br />
     <br />
