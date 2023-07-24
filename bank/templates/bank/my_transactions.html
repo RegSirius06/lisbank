@@ -1,14 +1,14 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Мои транзакции:</h1>
+    <h1>Мой счёт:</h1>
     <h4>Сейчас на вашем счету 
         {% if request.user.account.balance > 0 %}
             <span class="green">{{request.user.account.balance}}t</span>
-        {% elif request.user.account.balance < 0 %}
-            <span class="red">{{request.user.account.balance}}t</span>
-        {% else %}
+        {% elif request.user.account.balance == 0 %}
             {{request.user.account.balance}}t
+        {% else %}
+            <span class="red">{{request.user.account.balance}}t</span>
         {% endif %}
     .</h4>
     <h4><a href="{% url 'new-transaction-base' %}">Совершить перевод средств...</a></h4>
@@ -20,6 +20,7 @@
             <td class="td">Дата</td>
             <td class="td">Изменение счёта</td>
             <td class="td">Комментарий</td>
+            <td class="td">Создатель</td>
         </tr>
 
         {% for element in request.user.account.get_transactions %}
@@ -27,12 +28,13 @@
             <td class="td">{{ element.date }}</td>
             <td class="td">
                 {% if element.sign == '-' %}
-                    <span {% if element.receiver == request.user.account %} class="red" {% else %} class="green" {% endif %}>{% if element.receiver == request.user.account %}-{% else %}+{% endif %}{{ element.get_sum }}</span>
+                    <span {% if element.receiver == request.user.account or request.user.account.account_valid == element.transaction_valid %} class="red" {% else %} class="green" {% endif %}>{% if element.receiver == request.user.account or request.user.account.account_valid == element.transaction_valid %}-{% else %}+{% endif %}{{ element.get_sum }}</span>
                 {% else %}
-                    <span {% if element.receiver == request.user.account %} class="green" {% else %} class="red" {% endif %}>{% if element.receiver == request.user.account %}+{% else %}-{% endif %}{{ element.get_sum }}</span>
+                    <span {% if element.receiver == request.user.account or request.user.account.account_valid == element.transaction_valid %} class="green" {% else %} class="red" {% endif %}>{% if element.receiver == request.user.account or request.user.account.account_valid == element.transaction_valid %}+{% else %}-{% endif %}{{ element.get_sum }}</span>
                 {% endif %}
             </td>
             <td class="td">{{ element.comment }}</td>
+            <td class="td">{{ element.history }}</td>
         </tr>
         {% endfor %}
 

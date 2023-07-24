@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block title %}<title>Расписание</title>{% endblock %}
+
+{% block content %}
+
+    <h1>Новый пункт расписания</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form }}
+        </table>
+        <input type="submit" value="Создать" />
+    </form>
+
+{% endblock %}

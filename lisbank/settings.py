@@ -21,14 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-4!b-p)ca&n2k%_8kqr#ptzx4owmaflk6n%d6e3%k6lku=oi_mf'
+#SECRET_KEY = 'django-insecure-=r57^u@lb+pju&2e=3qy_g$(qb03r14g%xmcg3i=&)o1xtg4np'
 import os
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-4!b-p)ca&n2k%_8kqr#ptzx4owmaflk6n%d6e3%k6lku=oi_mf')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-=r57^u@lb+pju&2e=3qy_g$(qb03r14g%xmcg3i=&)o1xtg4np')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 # DEBUG = bool( os.environ.get('DJANGO_DEBUG', True) )
-DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -121,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = 'C:/LisBank/lisbank/bank/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

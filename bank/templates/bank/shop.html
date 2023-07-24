@@ -1,25 +1,27 @@
 {% extends "base_generic.html" %}
 
-{% block title %}
-    <title>Ассортимент магазина</title>
-{% endblock %}
+{% block title %}<title>Ассортимент магазина</title>{% endblock %}
 
 {% block content %}
     <h1>Магазин:</h1>
-    
-    {% if goods_list %}
+    {% if perms.bank.meria %}
+        <p><a href="{% url 'shop-new' %}">Здесь вы можете добавить новый товар...</a></p>
+    {% endif %}
+    {% if goods %}
     <table border=1 cellpadding=30px class="table">
         <tr class="th">
             <td>Товар</td>
             <td>Описание</td>
             <td>Цена</td>
+            {% if perms.bank.meria %}<td class="td">Ссылка</td>{% endif %}
         </tr>
 
-        {% for element in goods_list %}
+        {% for element in goods %}
         <tr class="tr">
             <td class="td">{{ element.name }}</td>
             <td class="td">{{ element.comment }}</td>
-            <td class="td">{{ element.get_sum }}</td>
+            <td class="td">{{ element.get_num }}</td>
+            {% if perms.bank.meria %}<td class="td"><a href="{{ element.get_absolute_url }}">Изменить товар..</a></td>{% endif %}
         </tr>
         {% endfor %}
 

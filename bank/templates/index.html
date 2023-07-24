@@ -2,23 +2,89 @@
 
 {% block content %}
 <h1>Добро пожаловать!</h1>
-  <p>Это главная страница банка ЛИСа.</p>
+  <h4>Это главная страница банка ЛИСа.</h4>
+  <!--
+  {% if user.is_authenticated %}
+    <h2>Здравствуй, {{ request.user.account }}</h2>
+    <ui>
+      {% if request.user.account.party != 0 %}
+        <li>Отряд: {{ request.user.account.party }}</li>
+      {% else %}
+        <li>Вы не принадлежите ни к одному отряду.</li>
+      {% endif %}
+      {% if request.user.account.group != 'None' %}
+        <li>Группа: {{ request.user.account.group }}</li>
+      {% else %}
+        <li>Вы не состоите ни в одной группе.</li>
+        <p class="text-muted">Если это не так, вы можете обратиться к минфину, он исправит.</p>
+      {% endif %}
+    </ui>
+  {% endif %}
+    -->
+  {% if readen_status %}
+  <h4><strong class="green">У вас нет новых сообщений.</strong></h4>
+  {% else %}
+  <h4><strong class="red">У вас есть новые сообщения!</strong></h4>
+  {% endif %}
+  <h4>Используйте поле сверху для навигации по сайту.</h4>
+  {% if perms.bank.staff_ %}
+    <h2>Для персонала:</h2>
+    <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-left">
+          {% if perms.bank.staff_ %}
+            <h2>Счёт банка:
+              {% if admin.balance > 0 %}
+                <span class="green">{{ admin.balance }}t</span>
+              {% elif admin.balance < 0 %}
+                <span class="red">{{ admin.balance }}t</span>
+              {% else %}
+                {{ admin.balance }}t
+              {% endif %}</h2>
+            {% if perms.bank.viewer %}<li><a href="{% url 'accounts' %}">Посмотреть все счета</a></li>{% endif %}
+            <li><a href="{% url 'new-transaction-staff' %}">Оформить штраф/премию</a></li>
+            <li><a href="{% url 'info-staff' %}">Работа с транзакциями</a></li>
+            <li><a href="{% url 'info-users' %}">Работа с пользователями</a></li>
+            <!--li><a href="file:///C:/lisbank/db.sqlite3" download="data_base" title="Для Стефана">Скачать базу данных</a></li-->  
+          {% endif %}
+        </ul>
+    </div>
+  {% endif %}
+  <h2>Список "Forbes":</h2>
+  <table class="table" border=1 cellpadding=30px>
+    <tr class="tr">
+      <td class="td">Человек</td>
+      <td class="td">Отряд</td>
+      <td class="td">Баланс</td>
+  </tr>
 
-{% if perms.bank.staff_ %}
-  <h2>Для персонала:</h2>
-  <div class="container-fluid">
-      <ul class="nav navbar-nav navbar-left">
-        {% if perms.bank.staff_ %}
-          <h2>Статус всех существующих транзакций: {{ request.user.account.renew_transactions }}</h2>
-          {% if perms.bank.viewer %}<li><a href="{% url 'accounts' %}">Посмотреть все счета</a></li>{% endif %}
-          <li><a href="{% url 'new-transaction-staff' %}">Оформить штраф/премию</a></li>
-          <li><a href="{% url 'info-staff' %}">Важная информация</a></li>
-        {% endif %}
-      </ul>
-  </div>
-{% endif %}
+  {% for element in forbes %}
+  <tr class="tr">
+      <td class="td">{{ element }}</td>
+      <td class="td">{{ element.party }}</td>
+      <td class="td">{{ element.balance }}t</td>
+  </tr>
+  {% endfor %}
 
-<h2>Основные новости:</h2>
-  <p>Не следует нарушать правила, которые вы можете прочитать <a href="{% url 'rules' %}">здесь</a>.</p>
-  <p class="text-muted">Вы посещаете эту страницу в {{num_visits}} раз.</p>
+  </table>
+
+  <h2>Список "AntiForbes":</h2>
+  <table class="table" border=1 cellpadding=30px>
+    <tr class="tr">
+      <td class="td">Человек</td>
+      <td class="td">Отряд</td>
+      <td class="td">Баланс</td>
+  </tr>
+
+  {% for element in antiforbes %}
+  <tr class="tr">
+      <td class="td">{{ element }}</td>
+      <td class="td">{{ element.party }}</td>
+      <td class="td">{{ element.balance }}t</td>
+  </tr>
+  {% endfor %}
+
+  </table>
+
+  <p class="text-muted">Не следует нарушать правила, которые вы можете прочитать <a href="{% url 'rules' %}">здесь</a>.</p>
+  <a href="#top" title="В начало" tabindex="-1" class="topbutton">Наверх</a>
 {% endblock %}

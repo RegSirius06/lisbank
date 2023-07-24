@@ -1,0 +1,45 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Все транзакции:</h1>
+    <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-left">
+          {% if perms.bank.staff_ %}
+            <li><a href="{% url 'new-transaction-full' %}">Создать транзакцию</a></li>
+            <li><a href="{% url 'new-transaction-staff' %}">Оформить штраф/премию</a></li>
+            <li><a href="{% url 'new-transaction-party' %}">Оформить штраф/премию на весь отряд</a></li>
+            <li><a href="{% url 'new-transaction-buy' %}">Оформить покупку</a></li>
+            {% if object_list %}
+            <li><a href="{% url 'do' %}">Применить все штрафы/премии</a></li>
+            <li><a href="{% url 'undo' %}">Отменить все штрафы/премии</a></li>
+            {% endif %}
+          {% endif %}
+        </ul>
+    </div>
+    <br />
+    {% if object_list %}
+    <table class="table">
+        <tr class="tr">
+            <td class="td">Транзакция</td>
+            <td class="td">Статус</td>
+            <td class="td">Ссылка</td>
+        </tr>
+        {% for element in object_list %}
+        <tr class="tr">
+            <td class="td">{{ element }}</td>
+            <td class="td">
+                {% if element.counted == True %}
+                    <span class="green">Применено</span>
+                {% else %}
+                    <span class="red">Не применено</span>
+                {% endif %}
+            </td>
+            <td class="td"><a href="{{ element.get_absolute_url_for_edit }}">Изменить транзакцию...</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+      <p>Ещё не существует ни одной транзакции.</p>
+    {% endif %}
+    <a href="#top" title="В начало" tabindex="-1" class="topbutton">Наверх</a>
+{% endblock %}

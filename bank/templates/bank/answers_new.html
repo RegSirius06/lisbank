@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block title %}<title>Задачи</title>{% endblock %}
+
+{% block content %}
+
+    <h1>Новая задача</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+        {{ form }}
+        </table>
+        <input type="submit" value="Создать" />
+    </form>
+
+{% endblock %}

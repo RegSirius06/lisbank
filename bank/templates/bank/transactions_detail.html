@@ -5,10 +5,10 @@
     <h4>Сейчас на счету 
         {% if account.balance > 0 %}
             <span class="green">{{account.balance}}t</span>
-        {% elif request.account.balance < 0 %}
-            <span class="red">{{account.balance}}t</span>
-        {% else %}
+        {% elif account.balance == 0 %}
             {{account.balance}}t
+        {% else %}
+            <span class="red">{{account.balance}}t</span>
         {% endif %}
     .</h4>
     <h2>Последние изменения счёта:</h2>
@@ -19,6 +19,7 @@
             <td class="td">Дата</td>
             <td class="td">Изменение счёта</td>
             <td class="td">Комментарий</td>
+            <td class="td">Создатель</td>
         </tr>
 
         {% for element in account.get_transactions %}
@@ -26,12 +27,13 @@
             <td class="td">{{ element.date }}</td>
             <td class="td">
                 {% if element.sign == '-' %}
-                    <span {% if element.receiver == account %} class="red" {% else %} class="green" {% endif %}>{% if element.receiver == account %}-{% else %}+{% endif %}{{ element.get_sum }}</span>
+                    <span {% if element.receiver == account or account.account_valid == element.transaction_valid %} class="red" {% else %} class="green" {% endif %}>{% if element.receiver == account or account.account_valid == element.transaction_valid %}-{% else %}+{% endif %}{{ element.get_sum }}</span>
                 {% else %}
-                    <span {% if element.receiver == account %} class="green" {% else %} class="red" {% endif %}>{% if element.receiver == account %}+{% else %}-{% endif %}{{ element.get_sum }}</span>
+                    <span {% if element.receiver == account or account.account_valid == element.transaction_valid %} class="green" {% else %} class="red" {% endif %}>{% if element.receiver == account or account.account_valid == element.transaction_valid %}+{% else %}-{% endif %}{{ element.get_sum }}</span>
                 {% endif %}
             </td>
             <td class="td">{{ element.comment }}</td>
+            <td class="td">{{ element.history }}</td>
         </tr>
         {% endfor %}
 
