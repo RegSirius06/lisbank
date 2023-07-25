@@ -30,7 +30,7 @@ def index(request):
     antiforbes = account.objects.exclude(party=0).order_by('balance')[:3]
     admin = account.objects.get(last_name="Admin")
     readen_status = True
-    if request.user == AnonymousUser:
+    if request.user != AnonymousUser:
         for i in list(chat_and_acc.objects.filter(what_acc=request.user.account)):
             readen_status &= i.readen
     return render(
