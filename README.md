@@ -51,6 +51,19 @@
 
 Проверить версию можно, запустив файл /lisbank/django_ver.py
 
+Затем нужно изменить одну строчку в /lisbank/settings.py. Она почти в самом конце файла:
+
+### STATIC_URL = 'static/'
+### STATIC_ROOT = 'C:/LisBank/lisbank/bank/static/'
+
+В STATIC_ROOT необходимо вбить путь до папки static на вашем устройсте, например:
+
+### STATIC_ROOT = 'D:/lisbank/bank/static/'
+
+Учтите, что путь должен оканчиваться на "/bank/static/".
+
+Если это изменение не внести, то, скорее всего, дизайн сайта пострадает очень сильно
+
 В консоли перейти в папку, где есть файл "manage.py" и запустить его командой:
 
 #### python .\manage.py runserver 0.0.0.0:8000 --insecure
