@@ -30,7 +30,7 @@ def index(request):
     antiforbes = account.objects.exclude(party=0).order_by('balance')[:3]
     admin = account.objects.get(last_name="Admin")
     readen_status = True
-    if request.user != AnonymousUser:
+    if request.user.is_authenticated:
         for i in list(chat_and_acc.objects.filter(what_acc=request.user.account)):
             readen_status &= i.readen
     return render(
@@ -206,14 +206,25 @@ class TransactionsDetailView(PermissionRequiredMixin, generic.DetailView):
     def get_queryset(self):
         return account.objects.all()
 
-class AllTransactionsListView(PermissionRequiredMixin, generic.ListView):
-    permission_required = ('bank.staff_', 'bank.transaction')
-    model = transaction
-    template_name ='bank/transaction_status.html'
-    paginate_by = 20
-
-    def get_queryset(self):
-        return transaction.objects.order_by('counted', '-date', 'receiver', 'history', 'cnt') #.filter(name=self.request.user.account.balance)
+@permission_required('bank.staff_')
+@permission_required('bank.transaction')
+def all_transsactions_view(request):
+    all_tr = transaction.objects.all()
+    paginator1 = Paginator(all_tr, 25)
+    page1 = request.GET.get('page1')
+    try:
+        items1 = paginator1.page(page1)
+    except PageNotAnInteger:
+        items1 = paginator1.page(1)
+    except EmptyPage:
+        items1 = paginator1.page(paginator1.num_pages)
+    return render(
+        request,
+        'bank/transaction_status.html',
+        context={
+            'object_list': items1,
+        }
+    )
 
 class MyTransactionsView(LoginRequiredMixin, generic.ListView):
     model = transaction
@@ -642,8 +653,6 @@ def re_new_account_full_add(request, pk):
                 last_name = form.cleaned_data['last_name']
                 balance = form.cleaned_data['balance']
                 username = translit(form.cleaned_data['username'])
-                for u in User.objects.all():
-                    if f'{u.username}' == f'{username}': return HttpResponse("<h2>Такой пользователь уже существует. <a href=\"/\">Назад...</a></h2>")
                 user_group = form.cleaned_data['user_group']
                 party = form.cleaned_data['party']
                 

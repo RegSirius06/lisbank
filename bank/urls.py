@@ -34,7 +34,7 @@ urlpatterns = [
     re_path(r'^all_balances/$', views.TransactionsListView.as_view(), name='accounts'),
     re_path(r'^my_transactions/$', views.MyTransactionsView.as_view(), name='my-transactions'),
 
-    re_path(r'^transactions/info/$', views.AllTransactionsListView.as_view(), name='info-staff'),
+    re_path(r'^transactions/info/$', views.all_transsactions_view, name='info-staff'),
     re_path(r'^transactions/delete/$', views.undo_transaction, name='undo'),
     re_path(r'^transactions/update/$', views.renew_transaction, name='do'),
     re_path(r'^transactions/edit/(?P<pk>[-\w]+)/$', views.re_new_transaction_add, name='transaction-edit'),

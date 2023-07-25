@@ -36,15 +36,15 @@
         {% endfor %}
     </table>
     {% if object_list.has_previous %}
-        <a href="?page2={{ items2.previous_page_number }}">Предыдущая страница</a>
+        <a href="?page1={{ object_list.previous_page_number }}">Предыдущая страница</a>
     {% endif %}
     <span class="page-current">
         Страница {{ object_list.number }} из {{ object_list.paginator.num_pages }}.
     </span>
     {% if object_list.has_next %}
-        <a href="?page2={{ items2.next_page_number }}">Следующая страница</a>
+        <a href="?page1={{ object_list.next_page_number }}">Следующая страница</a>
     {% endif %}
-    <form method="GET" action="{% url 'messages' %}">
+    <form method="GET" action="{% url 'info-users' %}">
         <input type="text" name="page1" value="{{ messages.number }}" />
         <button type="submit">Перейти</button>
     </form>
