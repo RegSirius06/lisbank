@@ -58,13 +58,13 @@
     {% endfor %}
 </table>
 {% if items1.has_previous %}
-    <a href="?page2={{ items2.previous_page_number }}">Предыдущая страница</a>
+    <a href="?page1={{ items1.previous_page_number }}">Предыдущая страница</a>
 {% endif %}
 <span class="page-current">
     Страница {{ items1.number }} из {{ items1.paginator.num_pages }}.
 </span>
 {% if items1.has_next %}
-    <a href="?page2={{ items2.next_page_number }}">Следующая страница</a>
+    <a href="?page1={{ items1.next_page_number }}">Следующая страница</a>
 {% endif %}
 <form method="GET" action="{% url 'messages' %}">
     <input type="text" name="page1" value="{{ messages.number }}" />
