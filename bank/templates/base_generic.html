@@ -43,9 +43,7 @@
                         <li><a href="{% url 'rules' %}">Законы ЛИСограда</a></li>
                         <li><a href="{% url 'plans' %}">Расписание на день</a></li>
                         <li><a href="{% url 'answers' %}">Задачи</a></li>
-                    {% if perms.bank.shop %}
                         <li><a href="{% url 'shop' %}">Ассортимент магазина</a></li>
-                    {% endif %}
     
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
