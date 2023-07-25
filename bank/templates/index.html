@@ -40,7 +40,7 @@
               {% else %}
                 {{ admin.balance }}t
               {% endif %}</h2>
-            {% if perms.bank.viewer %}<li><a href="{% url 'accounts' %}">Посмотреть все счета</a></li>{% endif %}
+            <li><a href="{% url 'accounts' %}">Посмотреть все счета</a></li>
             <li><a href="{% url 'new-transaction-staff' %}">Оформить штраф/премию</a></li>
             <li><a href="{% url 'info-staff' %}">Работа с транзакциями</a></li>
             <li><a href="{% url 'info-users' %}">Работа с пользователями</a></li>
