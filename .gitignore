@@ -3,3 +3,5 @@
 /log-pass.txt
 /lisbank/py.py
 /lisbank/backuping.py
+/bank/__pycache__/
+/bank/migrations/__pycache__/

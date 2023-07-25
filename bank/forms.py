@@ -97,6 +97,11 @@ class NewTransactionStaffFormParty(forms.Form):
             return self.cleaned_data['transaction_sign']
 
 class NewTransactionFullForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        current_users = kwargs.pop('current_user', None)
+        super(NewTransactionFullForm, self).__init__(*args, **kwargs)
+        if current_users is not None:
+            self.fields['transaction_creator'].queryset = account.objects.exclude(id__in=current_users)
     transaction_date = forms.DateField(help_text="Дата должна быть в пределах смены, по умолчанию сегодня.", label="Дата:")
 
     def clean_transaction_date(self):
@@ -113,13 +118,7 @@ class NewTransactionFullForm(forms.Form):
     def clean_transaction_receiver(self):
             return self.cleaned_data['transaction_receiver']
     
-    #ВНИМАНИЕ!!! Если не получается сделать миграцию, закомментируйте следующие пять строк кода на время миграции.
-    #После успешной миграции не забудьте откомментировать строки!
-    not_list_accounts = list(account.objects.filter(party=0).exclude(last_name='Admin'))
-    list_accounts = account.objects.all()
-    for i in not_list_accounts:
-        list_accounts = list_accounts.exclude(id=i.id)
-    transaction_creator = forms.ModelChoiceField(queryset=list_accounts, label="Даватель:")#, widget=forms.RadioSelect()) 
+    transaction_creator = forms.ModelChoiceField(queryset=account.objects.all(), label="Даватель:")#, widget=forms.RadioSelect()) 
     
     def clean_transaction_creator(self):
             return self.cleaned_data['transaction_creator']
