@@ -255,12 +255,8 @@ def new_transaction_staff_add(request):
 @permission_required('bank.staff_')
 @permission_required('bank.transaction')
 def new_transaction_staff_party_add(request):
-    not_list_accounts = list(account.objects.filter(party=0).exclude(last_name='Admin'))
-    list_accounts = []
-    for i in not_list_accounts:
-        list_accounts.append(i.id)
     if request.method == 'POST':
-        form = NewTransactionStaffFormParty(request.POST, current_users=list_accounts)
+        form = NewTransactionStaffFormParty(request.POST)
         if form.is_valid():
             receiver = int(form.cleaned_data['transaction_receiver'])
             all_receivers = account.objects.filter(party=receiver)
@@ -283,15 +279,19 @@ def new_transaction_staff_party_add(request):
         transaction_cnt = 0
         transaction_sign = '+'
         form = NewTransactionStaffFormParty(initial={'transaction_date': transaction_date, 'transaction_comment': transaction_comment,
-               'transaction_cnt': transaction_cnt, 'transaction_sign': transaction_sign}, current_users=list_accounts,)
+                                                     'transaction_cnt': transaction_cnt, 'transaction_sign': transaction_sign})
 
     return render(request, 'bank/transaction_form_staff_party.html', {'form': form,})
 
 @permission_required('bank.staff_')
 @permission_required('bank.transaction')
 def new_transaction_full_add(request):
+    not_list_accounts = list(account.objects.filter(party=0).exclude(last_name='Admin'))
+    list_accounts = []
+    for i in not_list_accounts:
+        list_accounts.append(i.id)
     if request.method == 'POST':
-        form = NewTransactionFullForm(request.POST)
+        form = NewTransactionFullForm(request.POST, current_users=list_accounts)
         if form.is_valid():
             new_transaction = transaction()
             new_transaction.id = uuid.uuid4()
@@ -315,7 +315,7 @@ def new_transaction_full_add(request):
         transaction_cnt = 0
         transaction_sign = '+'
         form = NewTransactionFullForm(initial={'transaction_date': transaction_date, 'transaction_comment': transaction_comment,
-                                               'transaction_cnt': transaction_cnt, 'transaction_sign': transaction_sign})
+               'transaction_cnt': transaction_cnt, 'transaction_sign': transaction_sign}, current_users=list_accounts,)
 
     return render(request, 'bank/transaction_form_full.html', {'form': form,})
 

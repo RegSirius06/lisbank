@@ -98,7 +98,7 @@ class NewTransactionStaffFormParty(forms.Form):
 
 class NewTransactionFullForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        current_users = kwargs.pop('current_user', None)
+        current_users = kwargs.pop('current_users', None)
         super(NewTransactionFullForm, self).__init__(*args, **kwargs)
         if current_users is not None:
             self.fields['transaction_creator'].queryset = account.objects.exclude(id__in=current_users)
